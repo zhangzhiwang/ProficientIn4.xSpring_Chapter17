@@ -15,7 +15,7 @@
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 	
-	<!-- 声明DispatcherServlet，默认加载classpath下面的<servlet-name>-servlet.xml的spring配置文件，启动web层spring容器（子容器） -->
+	<!-- 声明DispatcherServlet，默认加载WEB-INF下面的<servlet-name>-servlet.xml的spring配置文件，启动web层spring容器（子容器） -->
 	<servlet>
 		<servlet-name>asiainfo</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -28,23 +28,23 @@
 	</servlet-mapping>
 	
 	<!-- 一个web.xml可以配置多个DispatcherServlet，这样可以让每个DispatcherServlet处理不同的请求 -->
-	<servlet>
-		<servlet-name>asiainfo2</servlet-name>
-		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-		<load-on-startup>2</load-on-startup>
-		<init-param>
-			<!-- DispatcherServlet默认加载名为<servlet-name>-servlet.xml的文件作为spring web容器的配置文件，若要改变文件名称要用namespace属性来指定，如本例中spring将读取asiainfo2SpringConf.xml -->
-			<param-name>namespace</param-name>
-			<param-value>asiainfo2SpringConf</param-value>
-		</init-param>
-		<init-param>
-			<!-- 若配置文件没哦与放在classpath下面而是放到了别处，则需要通过contextConfigLocation属性来指定配置文件的路径 -->
-			<param-name>contextConfigLocation</param-name>
-			<param-value>classpath:/spring/aaa/asiainfo2SpringConf.xml</param-value>
-		</init-param>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>asiainfo2</servlet-name>
-		<url-pattern>*.do</url-pattern>
-	</servlet-mapping>
+<!-- 	<servlet> -->
+<!-- 		<servlet-name>asiainfo2</servlet-name> -->
+<!-- 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class> -->
+<!-- 		<load-on-startup>2</load-on-startup> -->
+<!-- 		<init-param> -->
+			<!-- DispatcherServlet默认加载名为WEB-INF/<servlet-name>-servlet.xml的文件作为spring web容器的配置文件，若要改变文件名称要用namespace属性来指定，如本例中spring将读取asiainfo2SpringConf.xml -->
+<!-- 			<param-name>namespace</param-name> -->
+<!-- 			<param-value>asiainfo2SpringConf</param-value> -->
+<!-- 		</init-param> -->
+<!-- 		<init-param> -->
+			<!-- 若配置文件没有与放在WEB-INF下面而是放到了别处，则需要通过contextConfigLocation属性来指定配置文件的路径 -->
+<!-- 			<param-name>contextConfigLocation</param-name> -->
+<!-- 			<param-value>/WEB-INF/spring/aaa/asiainfo2SpringConf.xml</param-value> -->
+<!-- 		</init-param> -->
+<!-- 	</servlet> -->
+<!-- 	<servlet-mapping> -->
+<!-- 		<servlet-name>asiainfo2</servlet-name> -->
+<!-- 		<url-pattern>*.do</url-pattern> -->
+<!-- 	</servlet-mapping> -->
 </web-app>
