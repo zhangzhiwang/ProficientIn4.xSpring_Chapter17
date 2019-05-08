@@ -29,7 +29,7 @@ public class UserController {
 	private IUserService userService;
 	
 	@RequestMapping("/regist")	// 负责处理URL为“部署跟路径/user/regist.html”的请求，即如果类定义处有@RequestMapping，则方法定义处的@RequestMapping所指定的路径是类定义处的下一级，若类定义处未指定@RequestMapping，则方法定义处的@RequestMapping也是相对于部署跟路径的
-	public String regist(@PathVariable("userId") String userId, @PathVariable("userName") String userName) {
+	public String regist(@PathVariable String userId, @PathVariable("userName") String userName) {
 		System.out.println(userId);
 		System.out.println(userName);
 		System.out.println("--------------");
