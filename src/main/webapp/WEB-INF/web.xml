@@ -17,13 +17,13 @@
 	
 	<!-- 声明DispatcherServlet，默认加载WEB-INF下面的<servlet-name>-servlet.xml的spring配置文件，启动web层spring容器（子容器） -->
 	<servlet>
-		<servlet-name>asiainfo</servlet-name>
+		<servlet-name>webApplicationContext</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<!-- 指定servlet映射，即某个servlet所拦截哪些url -->
 	<servlet-mapping>
-		<servlet-name>asiainfo</servlet-name>
+		<servlet-name>webApplicationContext</servlet-name>
 		<url-pattern>*.html</url-pattern>
 	</servlet-mapping>
 	
@@ -38,7 +38,7 @@
 <!-- 			<param-value>asiainfo2SpringConf</param-value> -->
 <!-- 		</init-param> -->
 <!-- 		<init-param> -->
-			<!-- 若配置文件没有与放在WEB-INF下面而是放到了别处，则需要通过contextConfigLocation属性来指定配置文件的路径 -->
+			<!-- 若配置文件没有放在WEB-INF下面而是放到了别处，则需要通过contextConfigLocation属性来指定配置文件的路径 -->
 <!-- 			<param-name>contextConfigLocation</param-name> -->
 <!-- 			<param-value>/WEB-INF/spring/aaa/asiainfo2SpringConf.xml</param-value> -->
 <!-- 		</init-param> -->

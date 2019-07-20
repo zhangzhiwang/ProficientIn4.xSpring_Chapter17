@@ -2,13 +2,30 @@ package com.asiainfo.entity;
 
 import java.sql.Timestamp;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.Length;
+
 public class User {
+//	@Min(value=1, message="userId格式不对")
 	private int userId;
+	@NotNull
+	@Length(min=2)
 	private String userName;
+	@NotNull
+	@Length(min=2)
 	private String password;
+//	@Max(10)
 	private int credits;
+//	@Past
 	private Timestamp lastVisit;
+//	@Pattern(regexp="^[A-Za-z0-9\\u4e00-\\u9fa5]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$", message="ip格式不对")
 	private String lastIp;
+	private Dept dept;
 
 	public int getUserId() {
 		return userId;
@@ -58,9 +75,17 @@ public class User {
 		this.lastIp = lastIp;
 	}
 
+	public Dept getDept() {
+		return dept;
+	}
+
+	public void setDept(Dept dept) {
+		this.dept = dept;
+	}
+
 	@Override
 	public String toString() {
-		return "User [userId=" + userId + ", userName=" + userName + ", password=" + password + ", credits=" + credits + ", lastVisit=" + lastVisit + ", lastIp=" + lastIp + "]";
+		return "User [userId=" + userId + ", userName=" + userName + ", password=" + password + ", credits=" + credits + ", lastVisit=" + lastVisit + ", lastIp=" + lastIp + ", dept=" + dept + "]";
 	}
 
 }

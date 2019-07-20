@@ -19,7 +19,7 @@
        ">
 
 	<!-- 1、配置bean注解扫描 -->
-	<context:component-scan base-package="com.asiainfo"></context:component-scan>
+	<context:component-scan base-package="com.asiainfo.service"></context:component-scan> <!-- 注：该配置文件作为Spring的父容器的配置文件来使用，所以不会扫描controller包，也就是说在service的实现类里面调用controller的bean是不行的，详见web.xml的注释 -->
 	<!-- 2、配置外部属性文件 -->
 	<context:property-placeholder location="classpath:db.properties,classpath:db/db_2.properties"/>
 	

@@ -10,4 +10,5 @@ import com.asiainfo.entity.User;
  */
 public interface IUserService {
 	void createUser(User user);
+//	void test();
 }

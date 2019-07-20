@@ -4,6 +4,7 @@
 	xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:zzw="http://www.asiainfo.com/schema/service" xmlns:aop="http://www.springframework.org/schema/aop"
 	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans   
        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
        http://www.springframework.org/schema/util
@@ -16,10 +17,23 @@
        http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
        http://www.springframework.org/schema/tx
        http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
        ">
 
 	<context:component-scan base-package="com.asiainfo.controller"></context:component-scan>
 	<!-- 配置视图解析器，将逻辑视图名拼上前后缀去指定真实视图文件(视图对象) -->
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" p:prefix="/WEB-INF/views/" p:suffix=".jsp"></bean>
 	
+	<!-- 注解驱动，作用：1、注册默认的HandlerMapping和HandlerAdapter，如若配置有用户自定义的相关组件，则会覆盖默认的；2、注册一个默认的ConversionService来满足大多数的类型转换，如果要自定义一个ConversionService，需要用conversion-service属性来指定；3、注册一个默认的Validator来进行数据校验 -->
+<!-- 	<mvc:annotation-driven conversion-service="myConversionService"></mvc:annotation-driven> -->
+	<mvc:annotation-driven></mvc:annotation-driven>
+	
+<!-- 	<bean id="myConversionService" class="org.springframework.context.support.ConversionServiceFactoryBean"> -->
+<!-- 		<property name="converters"> -->
+<!-- 			<list> -->
+<!-- 				<bean class="com.asiainfo.MyConversionService"></bean> -->
+<!-- 			</list> -->
+<!-- 		</property> -->
+<!-- 	</bean> -->
 </beans>
