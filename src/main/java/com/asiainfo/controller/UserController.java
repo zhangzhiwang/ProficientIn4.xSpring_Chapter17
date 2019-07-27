@@ -2,6 +2,10 @@ package com.asiainfo.controller;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,7 +59,9 @@ import com.asiainfo.service.interfaces.IUserService;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-	@Autowired // 如果有多个实现类，默认按类型注入，如果发现多个则按照名称注入，如果没有指定名称的bean，则抛错：No qualifying bean of type [com.asiainfo.service.interfaces.IUserService] is defined: expected single matching bean but found 2: userServiceImpl2,userServiceImpl
+	@Autowired // 如果有多个实现类，默认按类型注入，如果发现多个则按照名称注入，如果没有指定名称的bean，则抛错：No qualifying bean of type
+				// [com.asiainfo.service.interfaces.IUserService] is defined: expected single
+				// matching bean but found 2: userServiceImpl2,userServiceImpl
 	private IUserService userService;
 
 	@RequestMapping("/regist") // 负责处理URL为“部署跟路径/user/regist.html”的请求，即如果类定义处有@RequestMapping，则方法定义处的@RequestMapping所指定的路径是类定义处的下一级，若类定义处未指定@RequestMapping，则方法定义处的@RequestMapping也是相对于部署跟路径的
@@ -71,7 +77,8 @@ public class UserController {
 		return "user/register";
 	}
 
-	@RequestMapping(value = "/regist3", method = RequestMethod.POST, params = { "p1=1", "p2", "!p3" }, headers = { "content-type=text/html" })
+	@RequestMapping(value = "/regist3", method = RequestMethod.POST, params = { "p1=1", "p2", "!p3" }, headers = {
+			"content-type=text/html" })
 	public String regist3(String userId, String userName) {// @PathVariable后面最好要绑定url的占位符的名称以免换一个运行环境（比如到服务器上）出现意想不到的问题
 		System.out.println(userId);
 		System.out.println(userName);
@@ -80,7 +87,8 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/regist4/{userId}", method = RequestMethod.GET)
-	public String regist4(@PathVariable String userId, @MatrixVariable(required = false) Integer a, @MatrixVariable(required = false) String b) {// @PathVariable后面最好要绑定url的占位符的名称以免换一个运行环境（比如到服务器上）出现意想不到的问题
+	public String regist4(@PathVariable String userId, @MatrixVariable(required = false) Integer a,
+			@MatrixVariable(required = false) String b) {// @PathVariable后面最好要绑定url的占位符的名称以免换一个运行环境（比如到服务器上）出现意想不到的问题
 		System.out.println(userId);
 		System.out.println(a);
 		System.out.println(b);
@@ -89,7 +97,10 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/regist5", method = RequestMethod.GET)
-	public String regist5(@RequestParam(value = "userId", defaultValue = "111") int userId, @RequestParam(value = "userName", required = false) String userName, @CookieValue(value = "_ga", required = false) String _ga, @RequestHeader("Accept-Encoding") String encoding, @RequestHeader("Connection") String connection) {
+	public String regist5(@RequestParam(value = "userId", defaultValue = "111") int userId,
+			@RequestParam(value = "userName", required = false) String userName,
+			@CookieValue(value = "_ga", required = false) String _ga, @RequestHeader("Accept-Encoding") String encoding,
+			@RequestHeader("Connection") String connection) {
 		System.out.println(userId);
 		System.out.println(userName);
 		System.out.println(_ga);
@@ -125,7 +136,8 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/regist9", method = RequestMethod.GET)
-	public void regist9(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException {// 如果入参中使用HttpServletResponse，返回值类型是void即可
+	public void regist9(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
+			throws IOException {// 如果入参中使用HttpServletResponse，返回值类型是void即可
 		String userId = httpServletRequest.getParameter("userId");
 		String userName = (String) httpServletRequest.getAttribute("userName");// getAttribute()方法不是用来接受客户端传来的参数用的
 		System.out.println(httpServletRequest);
@@ -141,7 +153,8 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/regist10", method = RequestMethod.GET)
-	public void regist10(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, HttpSession session, @RequestParam("userName") String userName2) throws IOException {// 如果入参中使用HttpServletResponse，返回值类型是void即可
+	public void regist10(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
+			HttpSession session, @RequestParam("userName") String userName2) throws IOException {// 如果入参中使用HttpServletResponse，返回值类型是void即可
 		String userName = httpServletRequest.getParameter("userName");
 		System.out.println(userName);
 		System.out.println(userName2);
@@ -268,7 +281,7 @@ public class UserController {
 	}
 
 	@RequestMapping("/doRegist")
-	public ModelAndView doRegist(@Valid  User user) {
+	public ModelAndView doRegist(User user) {
 		System.out.println(user);
 
 		ModelAndView modelAndView = new ModelAndView();
@@ -277,8 +290,55 @@ public class UserController {
 		return modelAndView;
 	}
 
+	@RequestMapping("/showUserList")
+	public ModelAndView showUserList() {
+		Calendar calendar = new GregorianCalendar();
+		calendar.set(2019, 7, 27);
+		List<User> userList = new ArrayList<User>();
+		User user1 = new User();
+		user1.setUserName("zs1");
+		user1.setLastVisit(new Timestamp(calendar.getTimeInMillis()));
+		userList.add(user1);
+
+		User user2 = new User();
+		user2.setUserName("zs2");
+		user2.setLastVisit(new Timestamp(calendar.getTimeInMillis()));
+		userList.add(user2);
+
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("userList", userList);
+		modelAndView.setViewName("user/userList");
+		return modelAndView;
+	}
+	
+	@RequestMapping("/showUserListByExcel")
+	public ModelAndView showUserListByExcel() {
+		Calendar calendar = new GregorianCalendar();
+		calendar.set(2019, 7, 27);
+		List<User> userList = new ArrayList<User>();
+		User user1 = new User();
+		user1.setUserId(1);
+		user1.setUserName("zs1");
+		user1.setPassword("1234");
+		user1.setLastVisit(new Timestamp(calendar.getTimeInMillis()));
+		userList.add(user1);
+
+		User user2 = new User();
+		user2.setUserId(2);
+		user2.setUserName("zs2");
+		user2.setPassword("5678");
+		user2.setLastVisit(new Timestamp(calendar.getTimeInMillis()));
+		userList.add(user2);
+
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("userList", userList);
+		modelAndView.setViewName("userListExcelView");
+		return modelAndView;
+	}
+
 	// 添加模型的方式3
-	 @ModelAttribute("user")// @ModelAttribute加在方法上，Spring MVC在调用任何一个具体的处理方法前先调用在方法定义出标注了@ModelAttribute注解的方法，并将返回值以uu为键放在模型中，然后再执行具体的处理方法。见课本p587
+	@ModelAttribute("user") // @ModelAttribute加在方法上，Spring
+							// MVC在调用任何一个具体的处理方法前先调用在方法定义出标注了@ModelAttribute注解的方法，并将返回值以uu为键放在模型中，然后再执行具体的处理方法。见课本p587
 	public User getUser() {
 		User user = new User();
 		user.setUserId(3);

@@ -15,7 +15,7 @@
 </style>
 </head>
 <body>
-	<form:form modelAttribute="user" action="/c17/user/doRegist.html">
+	<form:form modelAttribute="user" action="/ProficientIn4.xSpring_Chapter17/user/doRegist.html">
 		<form:errors path="*" cssClass="errorClass" element="div" />
 		<table>
 			<tr>

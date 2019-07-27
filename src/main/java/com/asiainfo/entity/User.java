@@ -13,11 +13,11 @@ import org.hibernate.validator.constraints.Length;
 public class User {
 //	@Min(value=1, message="userId格式不对")
 	private int userId;
-	@NotNull
-	@Length(min=2)
+//	@NotNull
+//	@Length(min=2)
 	private String userName;
-	@NotNull
-	@Length(min=2)
+//	@NotNull
+//	@Length(min=2)
 	private String password;
 //	@Max(10)
 	private int credits;

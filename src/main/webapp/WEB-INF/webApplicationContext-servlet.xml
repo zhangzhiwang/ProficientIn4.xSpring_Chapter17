@@ -23,7 +23,12 @@
 
 	<context:component-scan base-package="com.asiainfo.controller"></context:component-scan>
 	<!-- 配置视图解析器，将逻辑视图名拼上前后缀去指定真实视图文件(视图对象) -->
-	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" p:prefix="/WEB-INF/views/" p:suffix=".jsp"></bean>
+	<!-- 如果jsp里面使用了JSTL的国际化标签<fmt:message>则需要使用JstlView视图类来替换默认的InternalResourceView -->
+	<!-- InternalResourceViewResolver的优先级最低 -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+		p:viewClass="org.springframework.web.servlet.view.JstlView"
+		p:prefix="/WEB-INF/views/"
+		p:suffix=".jsp"></bean>
 	
 	<!-- 注解驱动，作用：1、注册默认的HandlerMapping和HandlerAdapter，如若配置有用户自定义的相关组件，则会覆盖默认的；2、注册一个默认的ConversionService来满足大多数的类型转换，如果要自定义一个ConversionService，需要用conversion-service属性来指定；3、注册一个默认的Validator来进行数据校验 -->
 <!-- 	<mvc:annotation-driven conversion-service="myConversionService"></mvc:annotation-driven> -->
@@ -36,4 +41,18 @@
 <!-- 			</list> -->
 <!-- 		</property> -->
 <!-- 	</bean> -->
+	
+	<!-- 配置国际化资源 -->
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>i18n/messages</value>
+				<value>i18n/content</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- 配置另一种视图解析器BeanNameViewResolver，然后设置优先级，一个配置文件里面可以配置多个视图解析器 -->
+	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver" p:order="10"></bean> 
+	<bean id="userListExcelView" class="com.asiainfo.UserListExcelView"></bean>
 </beans>

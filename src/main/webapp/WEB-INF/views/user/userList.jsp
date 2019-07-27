@@ -16,11 +16,11 @@
                         </a>
 					</td>
 					<td>
-						${user.realName}
+						${user.userName}
 					</td>
-					<td>
-						<fmt:formatDate value="${topic.createDate}" pattern="yyyy-MM-dd" />
-					</td>
+<!-- 					<td> -->
+<%-- 						<fmt:formatDate value="${user.lastVisit}" pattern="yyyy-MM-dd" /> --%>
+<!-- 					</td> -->
 				</tr>
 			</c:forEach>
 			<table>
