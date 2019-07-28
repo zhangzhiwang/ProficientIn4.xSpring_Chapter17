@@ -24,7 +24,7 @@
 	<!-- 指定servlet映射，即某个servlet所拦截哪些url -->
 	<servlet-mapping>
 		<servlet-name>webApplicationContext</servlet-name>
-		<url-pattern>*.html</url-pattern>
+		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 	
 	<!-- 一个web.xml可以配置多个DispatcherServlet，这样可以让每个DispatcherServlet处理不同的请求 -->

@@ -1,5 +1,6 @@
 package com.asiainfo.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.Timestamp;
@@ -26,6 +27,7 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.MatrixVariable;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,6 +37,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.asiainfo.entity.Dept;
@@ -335,6 +338,157 @@ public class UserController {
 		modelAndView.setViewName("userListExcelView");
 		return modelAndView;
 	}
+	
+	@RequestMapping("/showUserListByPDF")
+	public ModelAndView showUserListByPDF() {
+		Calendar calendar = new GregorianCalendar();
+		calendar.set(2019, 7, 27);
+		List<User> userList = new ArrayList<User>();
+		User user1 = new User();
+		user1.setUserId(1);
+		user1.setUserName("zs1");
+		user1.setPassword("1234");
+		user1.setLastVisit(new Timestamp(calendar.getTimeInMillis()));
+		userList.add(user1);
+		
+		User user2 = new User();
+		user2.setUserId(2);
+		user2.setUserName("zs2");
+		user2.setPassword("5678");
+		user2.setLastVisit(new Timestamp(calendar.getTimeInMillis()));
+		userList.add(user2);
+		
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("userList", userList);
+		modelAndView.setViewName("userListPDFView");
+		return modelAndView;
+	}
+	
+	@RequestMapping("/showUserListByXML")
+	public ModelAndView showUserListByXML() {
+		Calendar calendar = new GregorianCalendar();
+		calendar.set(2019, 7, 27);
+		List<User> userList = new ArrayList<User>();
+		User user1 = new User();
+		user1.setUserId(1);
+		user1.setUserName("zs1");
+		user1.setPassword("1234");
+		user1.setLastVisit(new Timestamp(calendar.getTimeInMillis()));
+		userList.add(user1);
+		
+		User user2 = new User();
+		user2.setUserId(2);
+		user2.setUserName("zs2");
+		user2.setPassword("5678");
+		user2.setLastVisit(new Timestamp(calendar.getTimeInMillis()));
+		userList.add(user2);
+		
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("userList", userList);
+		modelAndView.setViewName("userListXMLView");
+		return modelAndView;
+	}
+	
+	@RequestMapping("/showUserListByJSON")
+	public ModelAndView showUserListByJSON() {
+		Calendar calendar = new GregorianCalendar();
+		calendar.set(2019, 7, 27);
+		List<User> userList = new ArrayList<User>();
+		User user1 = new User();
+		user1.setUserId(1);
+		user1.setUserName("zs1");
+		user1.setPassword("1234");
+		user1.setLastVisit(new Timestamp(calendar.getTimeInMillis()));
+		userList.add(user1);
+		
+		User user2 = new User();
+		user2.setUserId(2);
+		user2.setUserName("zs2");
+		user2.setPassword("5678");
+		user2.setLastVisit(new Timestamp(calendar.getTimeInMillis()));
+		userList.add(user2);
+		
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("userList", userList);
+		modelAndView.setViewName("userListJSONView");
+		return modelAndView;
+	}
+	
+	@RequestMapping("/showUserListByMix")
+	public ModelAndView showUserListByMix() {
+		Calendar calendar = new GregorianCalendar();
+		calendar.set(2019, 7, 27);
+		List<User> userList = new ArrayList<User>();
+		User user1 = new User();
+		user1.setUserId(1);
+		user1.setUserName("zs1");
+		user1.setPassword("1234");
+		user1.setLastVisit(new Timestamp(calendar.getTimeInMillis()));
+		userList.add(user1);
+		
+		User user2 = new User();
+		user2.setUserId(2);
+		user2.setUserName("zs2");
+		user2.setPassword("5678");
+		user2.setLastVisit(new Timestamp(calendar.getTimeInMillis()));
+		userList.add(user2);
+		
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("userList", userList);
+		modelAndView.setViewName("userListMix");
+		return modelAndView;
+	}
+	
+	@RequestMapping("/upload")
+	public ModelAndView upload() {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("uploadPage");
+		return modelAndView;
+	}
+	
+	@RequestMapping("/doUpload")
+	public ModelAndView doUpload(@RequestParam("name") String name, @RequestParam("file") MultipartFile multipartFile) throws Exception {// 上传的文件自动绑定到MultipartFile中
+		ModelAndView modelAndView = new ModelAndView();
+		if(multipartFile != null && !multipartFile.isEmpty()) {
+			System.out.println("ContentType:" + multipartFile.getContentType());
+			System.out.println("name:" + multipartFile.getName());
+			System.out.println("filename:" + multipartFile.getOriginalFilename());
+			System.out.println("sizw:" + multipartFile.getSize());
+			
+			multipartFile.transferTo(new File("/Users/zhangzhiwang/Desktop/tmp_2019_" + multipartFile.getOriginalFilename()));
+			modelAndView.setViewName("redirect:/user/success.html");
+			return modelAndView;
+		} else {
+			modelAndView.setViewName("redirect:/user/fail.html");
+			return modelAndView;
+		}
+	}
+	
+	@RequestMapping("/success")
+	public ModelAndView success() {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("success");
+		return modelAndView;
+	}
+	
+	@RequestMapping("/fail")
+	public ModelAndView fail() {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("fail");
+		return modelAndView;
+	}
+	
+	@RequestMapping("/throwException")
+	public ModelAndView throwException() throws MyException {
+		throw new MyException();
+	}
+	
+	@ExceptionHandler({RuntimeException.class, MyException.class})
+	public ModelAndView catchException() {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("fail");
+		return modelAndView;
+	}
 
 	// 添加模型的方式3
 	@ModelAttribute("user") // @ModelAttribute加在方法上，Spring
@@ -345,3 +499,5 @@ public class UserController {
 		return user;
 	}
 }
+
+class MyException extends Exception {}

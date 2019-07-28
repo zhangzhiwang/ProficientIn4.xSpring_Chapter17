@@ -53,6 +53,58 @@
 	</bean>
 	
 	<!-- 配置另一种视图解析器BeanNameViewResolver，然后设置优先级，一个配置文件里面可以配置多个视图解析器 -->
-	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver" p:order="10"></bean> 
-	<bean id="userListExcelView" class="com.asiainfo.UserListExcelView"></bean>
+<!-- 	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver" p:order="10"></bean>  -->
+	<!-- 配置相应的视图。注意：这里的bean id必须要和controller返回的逻辑视图名一致 -->
+	<!-- excel、pdf、xml、json视图对应的解析器都是BeanNameViewResolver -->
+<!-- 	<bean id="userListExcelView" class="com.asiainfo.UserListExcelView"></bean> -->
+<!-- 	<bean id="userListPDFView" class="com.asiainfo.UserListPDFView"></bean> -->
+<!-- 	<bean id="userListXMLView" class="org.springframework.web.servlet.view.xml.MarshallingView" p:modelKey="userList" p:marshaller-ref="xStreamMarshaller"></bean> -->
+	<bean id="xStreamMarshaller" class="org.springframework.oxm.xstream.XStreamMarshaller">
+		<property name="streamDriver">
+			<bean class="com.thoughtworks.xstream.io.xml.StaxDriver"></bean>
+		</property>
+		<property name="annotatedClasses">
+			<list>
+				<value>com.asiainfo.entity.User</value>
+			</list>
+		</property>
+	</bean>
+<!-- 	<bean id="userListJSONView" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" p:modelKey="userList"></bean> -->
+
+<!-- 	<bean class="org.springframework.web.servlet.view.XmlViewResolver" p:order="20" p:location="WEB-INF/views/smart-views.xml"></bean> -->
+
+	<bean id="contentNegotiationManager"
+          class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean"
+          p:ignoreAcceptHeader="true"
+          p:favorPathExtension="false"
+          p:favorParameter="true"
+          p:parameterName="format"
+          p:defaultContentType="text/html">
+        <property name="mediaTypes">
+            <value>
+                html=text/html
+                xml=application/xml
+                json=application/json
+            </value>
+        </property>
+    </bean>
+    <!-- 协商多种视图解析器 -->
+    <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver" p:order="0">
+        <property name="contentNegotiationManager" ref="contentNegotiationManager"/>
+        <property name="defaultViews">
+            <list>
+                <bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView"
+                      p:modelKeys="userList"/>
+                <bean class="org.springframework.web.servlet.view.xml.MarshallingView"
+                      p:modelKey="userList" p:marshaller-ref="xStreamMarshaller"/>
+            </list>
+        </property>
+    </bean>
+    
+    <!-- 文件上传配置 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" p:defaultEncoding="UTF-8" p:maxUploadSize="2282992" p:uploadTempDir="file:/Users/zhangzhiwang/Desktop/upload_tmp_dir"></bean>
+    
+    <!-- 将DispatcherServlet的映射路径设为“/”的前提是要配置下面两个之一 -->
+    <mvc:default-servlet-handler/>
+    <mvc:resources mapping="/resources/**" location="/,classpath:/META-INF/**"/>
 </beans>
